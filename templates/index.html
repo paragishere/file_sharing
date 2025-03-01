@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Sharing Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Welcome to the File Sharing Platform</h1>
+    <p>Select an option to proceed:</p>
+    <ul>
+        <li><a href="/send">Send a File</a></li>
+        <li><a href="/receive">Receive a File</a></li>
+    </ul>
+
+    <script>
+        // Ensure the location services are enabled
+        if (!navigator.geolocation) {
+            alert("Geolocation is not supported by your browser.");
+        } else {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    // Successfully retrieved location
+                    console.log("Location accessed: ", position.coords.latitude, position.coords.longitude);
+                },
+                function(error) {
+                    // Failed to retrieve location
+                    alert("Please enable location services to proceed with the file sharing platform.");
+                }
+            );
+        }
+    </script>
+</body>
+</html>

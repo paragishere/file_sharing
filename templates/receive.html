@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receive a File</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Receive a File</h1>
+    <form action="/receive" method="post">
+        <label for="code">Enter the unique code:</label>
+        <input type="text" name="code" required><br><br>
+
+        <button type="submit" id="downloadBtn">Download</button>
+    </form>
+
+    <script>
+        document.getElementById('downloadBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+
+                    var form = document.querySelector('form');
+                    var inputLat = document.createElement('input');
+                    var inputLon = document.createElement('input');
+
+                    inputLat.type = 'hidden';
+                    inputLat.name = 'latitude';
+                    inputLat.value = latitude;
+
+                    inputLon.type = 'hidden';
+                    inputLon.name = 'longitude';
+                    inputLon.value = longitude;
+
+                    form.appendChild(inputLat);
+                    form.appendChild(inputLon);
+
+                    form.submit(); // Submit form with location data
+                }, function() {
+                    alert('Please enable location services for file download.');
+                });
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send a File</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Send a File</h1>
+    <form action="/send" method="post" enctype="multipart/form-data">
+        <label for="file">Select file:</label>
+        <input type="file" name="file" required><br><br>
+
+        <button type="submit" id="uploadBtn">Upload</button>
+    </form>
+
+    {% if code %}
+        <h2>Your unique code is: {{ code }}</h2>
+        <p>Share this code with the recipient to enable them to download the file.</p>
+    {% endif %}
+
+    <script>
+        document.getElementById('uploadBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+            // Request for user's geolocation
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    // Add latitude and longitude to the form
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+
+                    var form = document.querySelector('form');
+                    var inputLat = document.createElement('input');
+                    var inputLon = document.createElement('input');
+
+                    inputLat.type = 'hidden';
+                    inputLat.name = 'latitude';
+                    inputLat.value = latitude;
+
+                    inputLon.type = 'hidden';
+                    inputLon.name = 'longitude';
+                    inputLon.value = longitude;
+
+                    form.appendChild(inputLat);
+                    form.appendChild(inputLon);
+
+                    form.submit(); // Submit form after adding location data
+                }, function() {
+                    alert('Please enable location services for secure file sharing.');
+                });
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        });
+    </script>
+</body>
+</html>
